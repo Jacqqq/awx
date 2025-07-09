@@ -1,8 +1,9 @@
-const channel = window.AirwallexWebViewChannel;
 /**
+ * Posts a message to the Flutter InAppWebView channel.
  * @param {object} messageObject - The message object to be sent.
  */
 function postToFlutter(messageObject) {
+    const channel = window.AirwallexWebViewChannel;
     if (channel && typeof channel.postMessage === 'function') {
         channel.postMessage(JSON.stringify(messageObject));
     } else {
@@ -19,32 +20,6 @@ function handleError(error) {
     console.error(errorMessage);
     postToFlutter({ error: errorMessage });
 }
-/**
- * REVISED: Add this polling mechanism at the end of your script.
- * It waits for the Airwallex SDK to be fully initialized before notifying Flutter.
- */
-function waitForSdkAndNotifyFlutter() {
-    let attempts = 0;
-    const maxAttempts = 50; // Wait for a maximum of 5 seconds
-
-    const intervalId = setInterval(() => {
-        // Check if the SDK object is now available on the window
-        if (window.AirwallexComponentsSDK) {
-            clearInterval(intervalId); // Stop checking
-            postToFlutter({ "event": "js_ready" }); // Notify Flutter
-        } else {
-            attempts++;
-            if (attempts > maxAttempts) {
-                clearInterval(intervalId); // Stop after timeout
-                console.error("Airwallex SDK failed to load in time.");
-                postToFlutter({ "error": "SDK failed to load." });
-            }
-        }
-    }, 100); // Check every 100ms
-}
-
-// Start the process once the initial page structure is loaded.
-document.addEventListener('DOMContentLoaded', waitForSdkAndNotifyFlutter);
 
 /**
  * Initializes and mounts the Airwallex SCA (Strong Customer Authentication) verification component.
@@ -75,11 +50,11 @@ window.startSca = async function (userEmail, langKey, env, authCode, clientId, c
             enabledElements: ['scaSetup', 'scaVerify'],
         });
 
-        const sca = await window.AirwallexComponentsSDK.createElement('scaVerify', {
+        var sca = await window.AirwallexComponentsSDK.createElement('scaVerify', {
             userEmail: userEmail,
             scaSessionCode: scaSessionCode,
         });
-
+      
         sca.mount('container-dom-id');
 
         sca.on('ready', () => {
@@ -95,12 +70,12 @@ window.startSca = async function (userEmail, langKey, env, authCode, clientId, c
         });
 
         sca.on('verificationFailed', (event) => {
-            const reason = event.reason || event.error?.message || 'Unknown SCA failure';
+            const reason = event.reason || (event.error && event.error.message) || 'Unknown SCA failure';
             postToFlutter({ "error": `SCA Failed: ${reason}` });
         });
 
         sca.on('error', (event) => {
-            const errMsg = event.error?.message || event.code || 'Unknown SCA element error';
+            const errMsg = (event.error && event.error.message) || event.code || 'Unknown SCA element error';
             postToFlutter({ "error": `SCA Error: ${errMsg}` });
         });
         sca.on('cancel', () => {
@@ -133,16 +108,16 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         let hashConfig;
         let urlPath;
 
-        if (isPhysical === true) {
+        if (isPhysical == true) { 
             urlPath = 'pin';
             hashConfig = {
                 token: token,
                 rules: {
                     '.pin': {
-                        fontSize: '21px',
+                        fontSize: '23px',
                         fontWeight: '500',
                         fontFamily: 'Inter',
-                        color: '#1E3C63',
+                        color: 'white',
                     },
                 },
             };
