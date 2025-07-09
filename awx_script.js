@@ -20,6 +20,11 @@ function handleError(error) {
     postToFlutter({ error: errorMessage });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // This message signals to Flutter that the JS environment is fully set up.
+    postToFlutter({ "event": "js_ready" }); 
+});
+
 /**
  * Initializes and mounts the Airwallex SCA (Strong Customer Authentication) verification component.
  * It sets up event listeners to communicate the SCA flow status back to Flutter.
