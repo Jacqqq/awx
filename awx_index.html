@@ -2,23 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script>
-        window.onerror = function(message, source, lineno, colno, error) {
-            const errorReport = {
-                "event": "js_error",
-                "message": message,
-                "source": source,
-                "lineno": lineno
-            };
-            // Use your existing channel to send the error report
-            if (window.AirwallexWebViewChannel) {
-                window.AirwallexWebViewChannel.postMessage(JSON.stringify(errorReport));
-            }
-            return true; // Prevents the error from showing in the browser console
-        };
-    </script>
-    <script src="https://checkout.airwallex.com/assets/elements.bundle.min.js" defer></script>
-    <script src="awx_script.js" defer></script>
+    <script src="https://checkout.airwallex.com/assets/elements.bundle.min.js"></script>
+    <script src="awx_script.js"></script>
     <title></title>
 </head>
 <body>
