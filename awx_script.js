@@ -19,11 +19,32 @@ function handleError(error) {
     console.error(errorMessage);
     postToFlutter({ error: errorMessage });
 }
+/**
+ * REVISED: Add this polling mechanism at the end of your script.
+ * It waits for the Airwallex SDK to be fully initialized before notifying Flutter.
+ */
+function waitForSdkAndNotifyFlutter() {
+    let attempts = 0;
+    const maxAttempts = 50; // Wait for a maximum of 5 seconds
 
-document.addEventListener('DOMContentLoaded', () => {
-    // This message signals to Flutter that the JS environment is fully set up.
-    postToFlutter({ "event": "js_loaded" }); 
-});
+    const intervalId = setInterval(() => {
+        // Check if the SDK object is now available on the window
+        if (window.AirwallexComponentsSDK) {
+            clearInterval(intervalId); // Stop checking
+            postToFlutter({ "event": "js_ready" }); // Notify Flutter
+        } else {
+            attempts++;
+            if (attempts > maxAttempts) {
+                clearInterval(intervalId); // Stop after timeout
+                console.error("Airwallex SDK failed to load in time.");
+                postToFlutter({ "error": "SDK failed to load." });
+            }
+        }
+    }, 100); // Check every 100ms
+}
+
+// Start the process once the initial page structure is loaded.
+document.addEventListener('DOMContentLoaded', waitForSdkAndNotifyFlutter);
 
 /**
  * Initializes and mounts the Airwallex SCA (Strong Customer Authentication) verification component.
