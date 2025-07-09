@@ -22,7 +22,7 @@ function handleError(error) {
 
 document.addEventListener('DOMContentLoaded', () => {
     // This message signals to Flutter that the JS environment is fully set up.
-    postToFlutter({ "event": "js_ready" }); 
+    postToFlutter({ "event": "js_loaded" }); 
 });
 
 /**
