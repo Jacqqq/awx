@@ -159,8 +159,8 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                     },
                     '.details__button svg': {
                         color: '#1E3C63',
-                        height: '36px',
-                        width: '36px',
+                        height: '27px',
+                        width: '24px',
                     },
                 },
             };
