@@ -175,6 +175,25 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         iframe.style.display = 'block';
         iframe.style.border = 'none';
 
+        window.addEventListener('message', function handleIframeEvents(event) {
+            postToFlutter({ "event": event.origin });
+            if (event.origin !== `https://${airwallexHost}`) {
+                return;
+            }
+
+            const eventType = event.data && event.data.type;
+            if (!eventType) return;
+
+            if (eventType === `${providerCardId}:details:loaded` || eventType === `${providerCardId}:pin:loaded`) {
+                postToFlutter({ "status": "details_loaded" });
+            }
+
+            if (eventType === `${providerCardId}:details:error` || eventType === `${providerCardId}:pin:error`) {
+                const errorMessage = event.data.error?.message || 'Failed to load card details.';
+                postToFlutter({ "error": `Details Error: ${errorMessage}` });
+            }
+        });
+        
         container.appendChild(iframe);
     } catch (error) {
         handleError(error);
