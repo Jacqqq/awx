@@ -103,8 +103,6 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
     try {
         const container = document.getElementById('container-dom-id');
         container.innerHTML = '';
-
-        postToFlutter({ "isphysical": isPhysical });
         let hashConfig;
         let urlPath;
 
@@ -114,10 +112,10 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                 token: token,
                 rules: {
                     '.pin': {
-                        fontSize: '23px',
+                        fontSize: '15px',
                         fontWeight: '500',
                         fontFamily: 'Inter',
-                        color: 'white',
+                        color: '#1E3C63',
                     },
                 },
             };
@@ -137,13 +135,13 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                     },
                     '.details__label': {
                         color: '#1E3C63',
-                        fontSize: '18px',
+                        fontSize: '13px',
                         fontWeight: '400',
                         lineHeight: '1.33',
                     },
                     '.details__value': {
                         color: '#1E3C63',
-                        fontSize: '21px',
+                        fontSize: '15px',
                         fontStyle: 'normal',
                         fontWeight: '500',
                         lineHeight: '1.33',
@@ -159,7 +157,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                     },
                     '.details__button svg': {
                         color: '#1E3C63',
-                        height: '27px',
+                        height: '24px',
                         width: '24px',
                     },
                 },
