@@ -176,7 +176,6 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         iframe.style.border = 'none';
 
         window.addEventListener('message', function handleIframeEvents(event) {
-            postToFlutter({ "event": event.origin });
             if (event.origin !== `https://${airwallexHost}`) {
                 return;
             }
