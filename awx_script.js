@@ -49,6 +49,11 @@ window.startSca = async function (userEmail, langKey, env, authCode, clientId, c
             codeVerifier: codeVerifier,
             enabledElements: ['scaSetup', 'scaVerify'],
         });
+    
+        if (!scaSessionCode) {
+            postToFlutter({ "message": 'no_sca' });
+            return;
+        }
 
         var sca = await window.AirwallexComponentsSDK.createElement('scaVerify', {
             userEmail: userEmail,
