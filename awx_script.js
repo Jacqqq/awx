@@ -104,14 +104,14 @@ window.startSca = async function (userEmail, langKey, env, authCode, clientId, c
  * @param {string} [langKey='en'] - (Optional) The language key.
  * @returns {void}
  */
-window.showDetails = function (token, providerCardId, env, isPhysical, isSingleUse = false, langKey = 'en') {
+window.showDetails = function (token, providerCardId, env, isPhysical = false, isSingleUse = false, langKey = 'en') {
     try {
         const container = document.getElementById('container-dom-id');
         container.innerHTML = '';
         let hashConfig;
         let urlPath;
 
-        if (isPhysical == true) { 
+        if (isPhysical === true) { 
             urlPath = 'pin';
             hashConfig = {
                 token: token,
