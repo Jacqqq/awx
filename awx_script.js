@@ -111,7 +111,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         let hashConfig;
         let urlPath;
 
-        if (JSON.parse(isPhysical)) { 
+        if (isPhysical==='true') { 
             urlPath = 'pin';
             hashConfig = {
                 token: token,
