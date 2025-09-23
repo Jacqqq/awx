@@ -189,7 +189,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
             if (!eventType) return;
 
             if (eventType === `${providerCardId}:details:loaded` || eventType === `${providerCardId}:pin:loaded`) {
-                postToFlutter({ "status": "details_loaded: " + eventType });
+                postToFlutter({ "status": "details_loaded" });
             }
 
             if (eventType === `${providerCardId}:details:error` || eventType === `${providerCardId}:pin:error`) {
