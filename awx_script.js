@@ -135,6 +135,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                         fontWeight: '500',
                         fontFamily: 'Inter',
                         color: '#1E3C63',
+                        paddingLeft: '20px', 
                     },
                 },
             };
