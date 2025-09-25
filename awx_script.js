@@ -1,9 +1,8 @@
+const channel = window.AirwallexWebViewChannel;
 /**
- * Posts a message to the Flutter InAppWebView channel.
  * @param {object} messageObject - The message object to be sent.
  */
 function postToFlutter(messageObject) {
-    const channel = window.AirwallexWebViewChannel;
     if (channel && typeof channel.postMessage === 'function') {
         channel.postMessage(JSON.stringify(messageObject));
     } else {
@@ -18,7 +17,7 @@ function postToFlutter(messageObject) {
 function handleError(error) {
     const errorMessage = `JS SCA Setup Error: ${error.message || error}`;
     console.error(errorMessage);
-    postToFlutter({ error: errorMessage });
+    postToFlutter({error: errorMessage});
 }
 
 /**
@@ -49,42 +48,42 @@ window.startSca = async function (userEmail, langKey, env, authCode, clientId, c
             codeVerifier: codeVerifier,
             enabledElements: ['scaSetup', 'scaVerify'],
         });
-    
+
         if (!scaSessionCode) {
-            postToFlutter({ "message": 'no_sca' });
+            postToFlutter({"message": 'no_sca'});
             return;
         }
 
-        var sca = await window.AirwallexComponentsSDK.createElement('scaVerify', {
+        const sca = await window.AirwallexComponentsSDK.createElement('scaVerify', {
             userEmail: userEmail,
             scaSessionCode: scaSessionCode,
         });
-      
+
         sca.mount('container-dom-id');
 
         sca.on('ready', () => {
-            postToFlutter({ "log": "SCA Element is ready" });
+            postToFlutter({"log": "SCA Element is ready"});
         });
 
-        sca.on('scaSetupSucceed', ({ mobileInfo }) => {
-            postToFlutter({ "scaSetupSucceed": mobileInfo });
+        sca.on('scaSetupSucceed', ({mobileInfo}) => {
+            postToFlutter({"scaSetupSucceed": mobileInfo});
         });
 
         sca.on('verificationSucceed', (event) => {
-            postToFlutter({ "scaToken": event.token });
+            postToFlutter({"scaToken": event.token});
         });
 
         sca.on('verificationFailed', (event) => {
             const reason = event.reason || (event.error && event.error.message) || 'Unknown SCA failure';
-            postToFlutter({ "error": `SCA Failed: ${reason}` });
+            postToFlutter({"error": `SCA Failed: ${reason}`});
         });
 
         sca.on('error', (event) => {
             const errMsg = (event.error && event.error.message) || event.code || 'Unknown SCA element error';
-            postToFlutter({ "error": `SCA Error: ${errMsg}` });
+            postToFlutter({"error": `SCA Error: ${errMsg}`});
         });
         sca.on('cancel', () => {
-            postToFlutter({ "log": "SCA cancelled." });
+            postToFlutter({"log": "SCA cancelled."});
         });
 
     } catch (error) {
@@ -113,10 +112,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
 
         const isPhysicalCard = String(isPhysical).toLowerCase() === 'true';
 
-        
         if (isPhysicalCard) {
-
-
             const pinTitle = document.createElement('div');
             pinTitle.textContent = 'PIN';
             pinTitle.style.fontFamily = 'Inter, sans-serif';
@@ -124,8 +120,8 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
             pinTitle.style.fontSize = '13px';
             pinTitle.style.fontWeight = '400';
             pinTitle.style.padding = '24px 20px 5px';
-            container.appendChild(pinTitle); 
-            
+            container.appendChild(pinTitle);
+
             urlPath = 'pin';
             hashConfig = {
                 token: token,
@@ -135,7 +131,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                         fontWeight: '500',
                         fontFamily: 'Inter',
                         color: '#1E3C63',
-                        paddingLeft: '20px', 
+                        paddingLeft: '20px',
                     },
                 },
             };
@@ -205,15 +201,15 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
             if (!eventType) return;
 
             if (eventType === `${providerCardId}:details:loaded` || eventType === `${providerCardId}:pin:loaded`) {
-                postToFlutter({ "status": "details_loaded" });
+                postToFlutter({"status": "details_loaded"});
             }
 
             if (eventType === `${providerCardId}:details:error` || eventType === `${providerCardId}:pin:error`) {
                 const errorMessage = event.data.error?.message || 'Failed to load card details.';
-                postToFlutter({ "error": `Details Error: ${errorMessage}` });
+                postToFlutter({"error": `Details Error: ${errorMessage}`});
             }
         });
-        
+
         container.appendChild(iframe);
     } catch (error) {
         handleError(error);
