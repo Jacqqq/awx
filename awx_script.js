@@ -111,7 +111,21 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         let hashConfig;
         let urlPath;
 
-        if (String(isPhysical).toLowerCase() === 'true') {
+        const isPhysicalCard = String(isPhysical).toLowerCase() === 'true';
+
+        
+        if (isPhysicalCard) {
+
+
+            const pinTitle = document.createElement('div');
+            pinTitle.textContent = 'PIN';
+            pinTitle.style.fontFamily = 'Inter, sans-serif';
+            pinTitle.style.color = '#1E3C63';
+            pinTitle.style.fontSize = '13px';
+            pinTitle.style.fontWeight = '400';
+            pinTitle.style.padding = '24px 20px 5px';
+            container.appendChild(pinTitle); 
+            
             urlPath = 'pin';
             hashConfig = {
                 token: token,
@@ -176,9 +190,10 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
         const iframe = document.createElement('iframe');
         iframe.src = iframeUrl;
         iframe.style.width = '100%';
-        iframe.style.height = '500px';
         iframe.style.display = 'block';
         iframe.style.border = 'none';
+
+        iframe.style.height = isPhysicalCard ? '300px' : '500px';
 
         window.addEventListener('message', function handleIframeEvents(event) {
             if (event.origin !== `https://${airwallexHost}`) {
