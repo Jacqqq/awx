@@ -114,7 +114,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
 
         if (isPhysicalCard) {
             const pinTitle = document.createElement('div');
-            pinTitle.textContent = 'PIN_600';
+            pinTitle.textContent = 'PIN';
             pinTitle.style.fontFamily = 'Inter, sans-serif';
             pinTitle.style.color = '#1E3C63';
             pinTitle.style.fontSize = '13px';
@@ -159,7 +159,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                         color: '#1E3C63',
                         fontSize: '15px',
                         fontStyle: 'normal',
-                        fontWeight: '500',
+                        fontWeight: '600',
                         lineHeight: '1.33',
                         margin: '0',
                     },
