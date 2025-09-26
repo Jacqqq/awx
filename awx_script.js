@@ -128,7 +128,7 @@ window.showDetails = function (token, providerCardId, env, isPhysical, isSingleU
                 rules: {
                     '.pin': {
                         fontSize: '15px',
-                        fontWeight: '500',
+                        fontWeight: '600',
                         fontFamily: 'Inter',
                         color: '#1E3C63',
                         paddingLeft: '20px',
